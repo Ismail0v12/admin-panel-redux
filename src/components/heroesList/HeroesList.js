@@ -4,7 +4,7 @@ import {CSSTransition, TransitionGroup} from "react-transition-group";
 import {createSelector} from "reselect";
 import {useHttp} from '../../hooks/http.hook';
 
-import {heroesFetching, heroesFetched, heroesFetchingError} from '../../actions';
+import {fetchHeroes} from '../../actions';
 import HeroesListItem from "../heroesListItem/HeroesListItem";
 import Spinner from '../spinner/Spinner';
 import "./heroes.scss";
@@ -14,14 +14,13 @@ import "./heroes.scss";
 // Удаление идет и с json файла при помощи метода DELETE
 
 const HeroesList = () => {
- // Функция createSelector() мемоизурует state
- // при этом предотвращая ре-рендеринг компопнента, он сравнивает значение
+	// Функция createSelector() мемоизурует state
+	// при этом предотвращая ре-рендеринг компопнента, он сравнивает значение
 	const filteredHeroesSelector = createSelector(
 		(state) => state.filters.filterByElement,
 		(state) => state.heroes.heroes,
 		(filter, heroes) => {
 			if (filter === "all") {
-				console.log("render");
 				return heroes;
 			} else {
 				return heroes.filter((item) => item.element === filter)
@@ -35,11 +34,7 @@ const HeroesList = () => {
 	const {request} = useHttp();
 
 	useEffect(() => {
-		dispatch(heroesFetching());
-		request("http://localhost:3002/heroes")
-			.then(data => dispatch(heroesFetched(data)))
-			.catch(() => dispatch(heroesFetchingError()))
-
+		dispatch(fetchHeroes(request));
 		// eslint-disable-next-line
 	}, []);
 

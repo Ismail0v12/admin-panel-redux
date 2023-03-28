@@ -5,29 +5,18 @@
 // Изменять json-файл для удобства МОЖНО!
 // Представьте, что вы попросили бэкенд-разработчика об этом
 
-import {connect} from "react-redux";
 import {useEffect} from "react";
-
-import {useHttp} from "../../hooks/http.hook";
-import * as actions from "../../actions";
-import Spinner from "../spinner/Spinner";
+import {connect} from "react-redux";
 import classnames from "classnames"
 
-const HeroesFilters = ({
-	                       filterHeroes,
-	                       filtersLoadingStatus,
-	                       filters,
-	                       filterByElement,
-	                       filtersFetched,
-	                       filtersFetching,
-	                       filtersFetchingError
-                       }) => {
+import {useHttp} from "../../hooks/http.hook";
+import {fetchFilters, filterHeroes} from "../../actions";
+import Spinner from "../spinner/Spinner";
 
+const HeroesFilters = ({filtersLoadingStatus, filters, filterByElement, heroesFilter, filtersFetch}) => {
 	const {request} = useHttp();
 	useEffect(() => {
-		filtersFetching()
-		request("http://localhost:3002/filters").then((res) => filtersFetched(res)).catch(() => filtersFetchingError())
-
+		filtersFetch(request)
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
@@ -36,7 +25,7 @@ const HeroesFilters = ({
 			[`${filter.class}`]: true,
 			active: filter.value === filterByElement,
 		})} name={filter.value}
-		        onClick={() => filterHeroes(filter.value)}>{filter.label}</button>
+		        onClick={() => heroesFilter(filter.value)}>{filter.label}</button>
 	))
 
 
@@ -64,4 +53,4 @@ const mapStateToProps = (state) => ({
 // 	return bindActionCreators({filterHeroes}, dispatch)
 // }
 
-export default connect(mapStateToProps, actions)(HeroesFilters);
+export default connect(mapStateToProps, {filtersFetch: fetchFilters, heroesFilter: filterHeroes})(HeroesFilters);
