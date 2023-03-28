@@ -1,0 +1,23 @@
+.hero-enter {
+  opacity: 0;
+  transform: translateX(-20px);
+}
+
+.hero-enter-active {
+  opacity: 1;
+  transition: 300ms ease-out;
+  transform: translateX(0);
+}
+
+.hero-exit {
+  opacity: 1;
+  transform: translateY(0);
+
+}
+
+.hero-exit-active {
+  opacity: 0;
+  transition: 300ms ease-out;
+  transform: translateX(20px);
+
+}
