@@ -1,4 +1,4 @@
-# Как работает `redux`?
+# Что такое `redux`?
 
 1. Redux состоит из трех основных частиц `STATE`,`ACTIONS`, `REDUCERS`
 2. `STATE` - глобальное хранилище всех данных, которая имеет приложение
@@ -13,16 +13,18 @@
 
 # Функциональность которое имеет `redux`
 
-1. Разделение `REDUCERS` на мелких частиц и комбинирование `REDUCERS` с помошью функции `combineReducers`
+1. Разделение `REDUCERS` на мелких частиц и комбинирование `REDUCERS` с помошью функции `combineReducers` 
+и качестве аргумента принимает объект
+```javascript
+import {combineReducers} from "@reduxjs/toolkit";
+import reducers from "path-to-your-reducers";
+
+const store = createStore(combineReducers({reducers}));
+
+export default store;
+```
 2. Разделение `ACTIONS` на мелких частиц.
 3. И еще много о котором я не знаю :)
-
-# `bindActionCreators`
-
-Функция `bindActionCreators` в Redux позволяет автоматически связать действия (`actions`) и функцию `dispatch`, чтобы
-упростить процесс отправки действий в `store`. Она принимает объект с функциями-действиями (`action creators`) и функцию
-`dispatch` в качестве аргументов и возвращает новый объект, содержащий те же функции-действия, но каждая из них
-автоматически вызывает функцию dispatch, когда она вызывается. Она используються с функией `connect`.
 
 # `connect`
 
@@ -42,7 +44,7 @@ function mapStateToProps(state) {
 
 `mapDispatchToProps` - это функция, которая возвращает объект, содержащий функции-обработчики действий, которые компонент
 должен использовать для отправки действий в store. С помошью функции `bindActionCreators` можно комбинировать несколько
-`actions`, так как это функция возращает объект
+`actions`, так как это функция возращает объект:
 
 ```javascript
 function mapDispatchToProps(dispatch) {
@@ -66,7 +68,7 @@ function TaskList(props) {
 export default connect(mapStateToProps, mapDispatchToProps)(TaskList);
 ```
 Можно даже не создавать функцию, а просто передать `actions` к функцию `connect` вторым аргументом, сама функция `connect`
-сделает все за нас
+сделает все за нас:
 
 ```javascript
 import { connect } from 'react-redux';
@@ -76,4 +78,16 @@ function TaskList(props) {
 }
 
 export default connect(mapStateToProps, actions)(TaskList);
+```
+# `bindActionCreators`
+
+Функция `bindActionCreators` в Redux позволяет автоматически связать действия (`actions`) и функцию `dispatch`, чтобы
+упростить процесс отправки действий в `store`. Она принимает объект с функциями-действиями (`action creators`) и функцию
+`dispatch` в качестве аргументов и возвращает новый объект, содержащий те же функции-действия, но каждая из них
+автоматически вызывает функцию dispatch, когда она вызывается. Она используються с функией `connect`.
+
+```javascript
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(actions, dispatch);
+}
 ```
