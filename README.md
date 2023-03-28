@@ -43,8 +43,7 @@ function mapStateToProps(state) {
 ```
 
 `mapDispatchToProps` - это функция, которая возвращает объект, содержащий функции-обработчики действий, которые компонент
-должен использовать для отправки действий в store. С помошью функции `bindActionCreators` можно комбинировать несколько
-`actions`, так как это функция возращает объект:
+должен использовать для отправки действий в store. 
 
 ```javascript
 function mapDispatchToProps(dispatch) {
@@ -53,6 +52,9 @@ function mapDispatchToProps(dispatch) {
   };
 }
 ```
+С помошью функции `bindActionCreators` можно комбинировать несколько
+`actions`, так как это функция возращает объект:
+
 ```javascript
 function mapDispatchToProps(dispatch) {
   return bindActionCreators(actions, dispatch);
